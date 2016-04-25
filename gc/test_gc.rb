@@ -7,11 +7,15 @@ class TestComputingGCcontent < MiniTest::Test
   end
 
   def test_computing_for_dna_with_g_and_c_only_is_1
-    assert_equal(1, compute_gc_content('GCCGCGCGCG'))
+    assert_equal(100, compute_gc_content('GCCGCGCGCG'))
+  end
+
+  def test_computing_for_dna_with_all_4_symbols
+    assert_equal(37.5, compute_gc_content('AGCTATAG'))
   end
 end
 
 def compute_gc_content(dna_strand)
   gc_content = dna_strand.chars.select { |symbol| symbol =~ /[GC]/ }
-  gc_content.count / dna_strand.chars.count
+  (gc_content.count.to_f / dna_strand.chars.count) * 100
 end
