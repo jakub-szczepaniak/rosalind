@@ -1,11 +1,11 @@
 import regex as re
 
+
 def main():
     parsed_input = []
     with open('rosalind_subs.txt', 'r') as dataset:
         for line in dataset.readlines():
             parsed_input.append(line.rstrip())
-    print(parsed_input)
     result = locations(parsed_input[0], parsed_input[1])
     print(' '.join([str(pos) for pos in result]))
 
