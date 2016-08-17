@@ -12,3 +12,7 @@ class Organism():
 
 def get_dominant():
     return Organism(True, True)
+
+
+def get_recessive():
+    return Organism(False, False)

@@ -1,5 +1,5 @@
 import unittest
-from iprb import Organism, get_dominant
+from iprb import Organism, get_dominant, get_recessive
 
 class TestOrganism(unittest.TestCase):
 
@@ -19,3 +19,10 @@ class TestOrganism(unittest.TestCase):
 
         self.assertEqual(True, dominant.factor_1())
         self.assertEqual(True, dominant.factor_2())
+
+    def test_creating_recessive_organism(self):
+
+        recessive = get_recessive()
+
+        self.assertEqual(False, recessive.factor_1())
+        self.assertEqual(False, recessive.factor_2())
