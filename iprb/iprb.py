@@ -8,3 +8,7 @@ class Organism():
 
     def factor_2(self):
         return self._Y
+
+
+def get_dominant():
+    return Organism(True, True)
