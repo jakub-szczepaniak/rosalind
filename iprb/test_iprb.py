@@ -1,28 +1,27 @@
 import unittest
-from iprb import Organism, get_dominant, get_recessive
+from iprb import Population
 
-class TestOrganism(unittest.TestCase):
+class TestPopulation(unittest.TestCase):
 
     def setUp(self):
         pass
 
-    def test_organism_can_have_2_factors(self):
+    def test_population_has_several_organisms(self):
+        self.assertEqual(7, Population(1, 3, 3).count())
 
-        subject = Organism(True, False)
+    def test_probability_dominant(self):
 
-        self.assertEqual(True, subject.factor_1())
-        self.assertEqual(False, subject.factor_2())
+        population = Population(1, 3, 3)
 
-    def test_creating_dominant_organism(self):
+        self.assertAlmostEqual(1.0/7.0, population.p_dominant())
 
-        dominant = get_dominant()
+    def test_probability_heter(self):
 
-        self.assertEqual(True, dominant.factor_1())
-        self.assertEqual(True, dominant.factor_2())
+        population = Population(3, 4, 1)
+        self.assertAlmostEqual(0.5, population.p_hetero())
 
-    def test_creating_recessive_organism(self):
+    def test_probability_recessive(self):
 
-        recessive = get_recessive()
+        population = Population(3, 3, 3)
 
-        self.assertEqual(False, recessive.factor_1())
-        self.assertEqual(False, recessive.factor_2())
+        self.assertAlmostEqual(0.3333333, population.p_recesive())

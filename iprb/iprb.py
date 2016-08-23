@@ -1,18 +1,18 @@
-class Organism():
-    def __init__(self, factor_1, factor_2):
-        self._X = factor_1
-        self._Y = factor_2
+class Population():
+    def __init__(self, dominant_count, hetero_count, recesive_count):
+        self._dominant = dominant_count
+        self._hetero = hetero_count
+        self.recesive = recesive_count
+        self._count = self.count()
 
-    def factor_1(self):
-        return self._X
+    def count(self):
+        return self._dominant + self._hetero + self.recesive
 
-    def factor_2(self):
-        return self._Y
+    def p_dominant(self):
+        return self._dominant/self._count
 
+    def p_hetero(self):
+        return self._hetero/self._count
 
-def get_dominant():
-    return Organism(True, True)
-
-
-def get_recessive():
-    return Organism(False, False)
+    def p_recesive(self):
+        return self.recesive/self._count
