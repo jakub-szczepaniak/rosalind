@@ -32,11 +32,9 @@ class TestSharedPrepareStrandCandidates(unittest.TestCase):
         strands = ['GATTACA', 'TAGACCA', 'ATACA']
         self.assertEqual(True, motif_in_all_strands('TA', strands))
 
-
-
         
 def find_motif(strands):
-    reference = sorted(prepare_set(strands[0]), reverse=True)
+    reference = sorted(list(prepare_set(strands[0])), key=len, reverse=True)
     for motif in reference:
         if motif_in_all_strands(motif, strands):
             return motif
