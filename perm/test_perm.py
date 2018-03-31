@@ -13,7 +13,7 @@ class TestPermutations(unittest.TestCase):
         dataset = range(1, 4)
         result = list(itertools.permutations(dataset))
     def test_real_data(self):
-        test_number = 7
+        test_number = 5
         dataset = range(1, 1 + test_number)
         result = list(itertools.permutations(dataset))
         save_result(perm_count(test_number), result)
