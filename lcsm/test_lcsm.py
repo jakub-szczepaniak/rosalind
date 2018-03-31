@@ -17,18 +17,32 @@ class TestSharedPrepareStrandCandidates(unittest.TestCase):
         result = {'b', 'c', 'ab', 'ca', 'abc', 'a', 'abca', 'bc', 'bca'}
 
         self.assertEqual(result, prepare_set(sample_strand))
+
     def test_for_sample_data(self):
         dataset = load_dataset('rosalind_lcsm.txt')
         strands = parse_dataset(dataset)
         found = find_motif(strands)
-        print(found)
+        self.assertEqual('ABC', found)
+    
+    def test_verify_contained_all_returns_false(self):
+        strands = ['GATTACA', 'TAGACCA', 'ATACA']
+        self.assertEqual(False, motif_in_all_strands('GATTA', strands))
+
+    def test_verify_contained_all_returns_true(self):
+        strands = ['GATTACA', 'TAGACCA', 'ATACA']
+        self.assertEqual(True, motif_in_all_strands('TA', strands))
+
+
+
         
 def find_motif(strands):
     reference = sorted(prepare_set(strands[0]), reverse=True)
     for motif in reference:
-        if all(motif in strand for strand in strands[1:]):
+        if motif_in_all_strands(motif, strands):
             return motif
-    
+def motif_in_all_strands(motif, strands):
+    return all(motif in strand for strand in strands)
+
 def prepare_set(input_string):
   length = len(input_string)
   return set([input_string[i:j+1] for i in range(length) for j in range(i, length)])
