@@ -1,11 +1,10 @@
 class StrandsCollection:
     def __init__(self, list_of_strands):
         self.validate(list_of_strands)
-        length = len(list_of_strands[0])
 
+        length = len(list_of_strands[0])
         self.strands = list_of_strands
         self._consensus = self.strands[0]
-        
         self._profile = {'A':[0]*length, 'C': [0]*length, 'G':[0]*length, 'T':[0]*length}
 
     def validate(self, list_of_strands):
@@ -24,15 +23,9 @@ class StrandsCollection:
         return self._profile
 
     def calculate_profile(self):
-        for index, allel in enumerate(self.strands[0]):
-            if allel == 'A':
-                self._profile['A'][index] +=1
-            elif allel == 'C':
-                self._profile['C'][index] +=1
-            elif allel == 'G':
-                self._profile['G'][index] +=1
-            elif allel == 'T':
-                self._profile['T'][index] +=1
+        for strand in self.strands:
+            for index, allel in enumerate(strand):
+                self._profile[allel][index] +=1
 
 class CollectionNotValid(Exception):
     pass

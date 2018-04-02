@@ -23,3 +23,7 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
     @unittest.skip('for now')
     def test_only_4_characters_are_allowed(self):
         pass
+    def test_profile_of_2_strands(self):
+        sample = StrandsCollection(['AGCT', 'AGCT'])
+        self.assertEqual(sample.profile, {'A':[2,0,0,0], 'C':[0, 0, 2, 0], 'G': [0, 2, 0, 0], 'T': [0, 0, 0, 2]})
+
