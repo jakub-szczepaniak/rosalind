@@ -16,3 +16,8 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
         sample = StrandsCollection(['AGCT'])
 
         self.assertEqual(sample.profile, {'A':[1,0,0,0], 'C':[0, 0, 1, 0], 'G': [0, 1, 0, 0], 'T': [0, 0, 0, 1]})
+
+    def test_items_have_the_same_length(self):
+
+        with self.assertRaises(CollectionNotValid):
+            StrandsCollection(['ABC', 'C'])
