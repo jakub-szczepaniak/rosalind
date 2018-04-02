@@ -26,4 +26,16 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
     def test_profile_of_2_strands(self):
         sample = StrandsCollection(['AGCT', 'AGCT'])
         self.assertEqual(sample.profile, {'A':[2,0,0,0], 'C':[0, 0, 2, 0], 'G': [0, 2, 0, 0], 'T': [0, 0, 0, 2]})
+    
+    def test_profile_of_sample_strands(self):
+        strands = ['ATCCAGCT', 'GGGCAACT', 'ATGGATCT', 'AAGCAACC', 'TTGGAACT', 'ATGCCATT', 'ATGGCACT']
+
+        sample = StrandsCollection(strands)
+        sample_profile = {
+            'A':[5, 1, 0, 0, 5, 5, 0, 0],
+            'C':[0, 0, 1, 4, 2, 0, 6, 1],
+            'G':[1, 1, 6, 3, 0, 1, 0, 0], 
+            'T':[1, 5, 0, 0, 0, 1, 1, 6]
+        }
+        self.assertEqual(sample_profile, sample.profile)
 
