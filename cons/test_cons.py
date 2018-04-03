@@ -38,4 +38,16 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
             'T':[1, 5, 0, 0, 0, 1, 1, 6]
         }
         self.assertEqual(sample_profile, sample.profile)
+    def test_pretty_print_of_consensus_and_profile(self):
+        strands = ['ATCCAGCT', 'GGGCAACT', 'ATGGATCT', 'AAGCAACC', 'TTGGAACT', 'ATGCCATT', 'ATGGCACT']
+        consensus = 'ATCCAGCT'
+
+        expected = '''ATCCAGCT
+A: 5 1 0 0 5 5 0 0
+C: 0 0 1 4 2 0 6 1
+G: 1 1 6 3 0 1 0 0
+T: 1 5 0 0 0 1 1 6
+'''
+        self.assertEqual(expected, StrandsCollection(strands).pprint())
+
 
