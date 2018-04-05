@@ -17,7 +17,23 @@ class StrandsCollection:
        return {'A':[0]*length, 'C': [0]*length, 'G':[0]*length, 'T':[0]*length}        
     @property
     def consensus(self):
-        return self._consensus
+        self.calculate_profile()
+        self._consensus = self.calculate_consensus()
+        return "".join(self._consensus)
+    def calculate_consensus(self):
+        result = []
+        
+        for index in range(0, len(self._consensus)):
+            max_column = 0
+            max_key = ''
+            for key in self._profile.keys():
+                if self._profile[key][index] > max_column:
+                    max_column = self._profile[key][index]
+                    max_key = key
+            result.append(max_key)
+        
+        return result
+
     @property
     def profile(self):
         self._profile = self.empty_profile(len(self.strands[0]))

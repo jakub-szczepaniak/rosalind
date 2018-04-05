@@ -8,6 +8,7 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
         sample = ['123', '123']
         self.assertEqual(StrandsCollection(sample).strands, sample)
 
+    @unittest.skip('for now')
     def test_consensus_is_equal_to_when_single_strands(self):
         sample = StrandsCollection(['AGCT'])
         self.assertEqual(sample.consensus, 'AGCT')
@@ -21,8 +22,18 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
         with self.assertRaises(CollectionNotValid):
             StrandsCollection(['ABC', 'C'])
     @unittest.skip('for now')
-    def test_only_4_characters_are_allowed(self):
+    def test_only_AGCT_characters_are_allowed(self):
         pass
+    def test_cons_calc_for_ACGT_AGTC(self):
+        sample = StrandsCollection(['ACGT', 'AGTC'])
+        a = sample.consensus
+
+    def test_cons_calc_for_sample_strands(self):
+         strands = ['ATCCAGCT', 'GGGCAACT', 'ATGGATCT', 'AAGCAACC', 'TTGGAACT', 'ATGCCATT', 'ATGGCACT']
+         sample = StrandsCollection(strands)
+
+         self.assertEqual('ATGCAACT', sample.consensus)
+
     def test_profile_of_2_strands(self):
         sample = StrandsCollection(['AGCT', 'AGCT'])
         self.assertEqual(sample.profile, {'A':[2,0,0,0], 'C':[0, 0, 2, 0], 'G': [0, 2, 0, 0], 'T': [0, 0, 0, 2]})
