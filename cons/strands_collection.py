@@ -45,7 +45,7 @@ class StrandsCollection:
             for index, allel in enumerate(strand):
                 self._profile[allel][index] +=1
     def pprint(self):
-        result = self._consensus + '\n' 
+        result = self.consensus + '\n' 
         
         for key in sorted(self.profile.keys()):
             as_string = [str(val) for val in self.profile[key]]    

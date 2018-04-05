@@ -8,7 +8,6 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
         sample = ['123', '123']
         self.assertEqual(StrandsCollection(sample).strands, sample)
 
-    @unittest.skip('for now')
     def test_consensus_is_equal_to_when_single_strands(self):
         sample = StrandsCollection(['AGCT'])
         self.assertEqual(sample.consensus, 'AGCT')
@@ -49,16 +48,44 @@ class TestStrandsConsensusAndProfile(unittest.TestCase):
             'T':[1, 5, 0, 0, 0, 1, 1, 6]
         }
         self.assertEqual(sample_profile, sample.profile)
+    
     def test_pretty_print_of_consensus_and_profile(self):
         strands = ['ATCCAGCT', 'GGGCAACT', 'ATGGATCT', 'AAGCAACC', 'TTGGAACT', 'ATGCCATT', 'ATGGCACT']
         consensus = 'ATCCAGCT'
 
-        expected = '''ATCCAGCT
+        expected = '''ATGCAACT
 A: 5 1 0 0 5 5 0 0
 C: 0 0 1 4 2 0 6 1
 G: 1 1 6 3 0 1 0 0
 T: 1 5 0 0 0 1 1 6
 '''
         self.assertEqual(expected, StrandsCollection(strands).pprint())
+    @unittest.skip('for now')
+    def test_on_sample_dataset(self):
+        dataset = load_dataset('sample.txt')
+        strands = parse_dataset(dataset)
+        sample = StrandsCollection(strands)
+        print(sample.consensus)
+        print(sample.profile)
+        sample.pprint()
+    def test_on_real_dataset(self):
+        dataset = load_dataset('rosalind_cons.txt')
+        strands = parse_dataset(dataset)
+        sample = StrandsCollection(strands)
+        result = sample.profile
+        result = sample.consensus
+        sample.pprint()
+def extract_strands_from(dataset):
+    for i in range(0, len(dataset), 18):
+        yield dataset[i+1:i + 18]
 
+def parse_dataset(dataset):
+    return ["".join(strand) for strand in extract_strands_from(dataset)]
+
+def load_dataset(filename):
+    all_lines = []
+    with open(filename, 'r') as dataset:
+        for line in dataset.readlines():
+            all_lines.append(line.rstrip())
+    return all_lines
 
