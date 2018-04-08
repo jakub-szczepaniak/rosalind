@@ -65,22 +65,45 @@ T: 1 5 0 0 0 1 1 6
         dataset = load_dataset('sample.txt')
         strands = parse_dataset(dataset)
         sample = StrandsCollection(strands)
-        print(sample.consensus)
-        print(sample.profile)
         sample.pprint()
+    
+    
     def test_on_real_dataset(self):
         dataset = load_dataset('rosalind_cons.txt')
-        strands = parse_dataset(dataset)
-        sample = StrandsCollection(strands)
+        strands = extract_strands(dataset)
+        
+        sample = StrandsCollection(list(strands.values()))
         result = sample.profile
         result = sample.consensus
-        sample.pprint()
-def extract_strands_from(dataset):
-    for i in range(0, len(dataset), 18):
-        yield dataset[i+1:i + 18]
+        save_result(sample.pprint())
 
-def parse_dataset(dataset):
-    return ["".join(strand) for strand in extract_strands_from(dataset)]
+    def test_getting_key_indexes(self):
+        dataset = load_dataset('rosalind_cons.txt')
+        key_indexes = get_key_indexes(dataset)
+        self.assertEqual([0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170], key_indexes)
+
+    @unittest.skip('for now')
+    def test_getting_key_indexes_pairs(self):
+        dataset = load_dataset('rosalind_cons.txt')
+        key_indexes = get_key_indexes(dataset)
+        for start, end in get_start_end_indexes(key_indexes):
+            print("{}:{}".format(start, end))
+
+def extract_strands(dataset):
+    result = {}
+    key_indexes = get_key_indexes(dataset)
+    for start, end in get_start_end_indexes(key_indexes):
+        result[dataset[start]] = "".join(dataset[start+1:end])
+    return result
+
+def get_key_indexes(dataset):
+    result = [index for index, line in enumerate(dataset) if line.startswith('>')]
+    result.append(len(dataset))
+    return result
+
+def get_start_end_indexes(indices):
+    for i in range(0, len(indices)-1):
+        yield (indices[i], indices[i+1])
 
 def load_dataset(filename):
     all_lines = []
@@ -88,4 +111,9 @@ def load_dataset(filename):
         for line in dataset.readlines():
             all_lines.append(line.rstrip())
     return all_lines
+
+def save_result(dataset):
+    with open('result.txt', 'w') as target:
+        for line in dataset:
+            target.write(line)
 

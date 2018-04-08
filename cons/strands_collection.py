@@ -13,13 +13,16 @@ class StrandsCollection:
         length = len(list_of_strands[0])
         if any(len(strand) != length for strand in list_of_strands):
             raise CollectionNotValid('Strands have to have same length!')
+
     def empty_profile(self, length):
        return {'A':[0]*length, 'C': [0]*length, 'G':[0]*length, 'T':[0]*length}        
+
     @property
     def consensus(self):
         self.calculate_profile()
         self._consensus = self.calculate_consensus()
         return "".join(self._consensus)
+
     def calculate_consensus(self):
         result = []
         
@@ -44,6 +47,7 @@ class StrandsCollection:
         for strand in self.strands:
             for index, allel in enumerate(strand):
                 self._profile[allel][index] +=1
+
     def pprint(self):
         result = self.consensus + '\n' 
         
@@ -53,6 +57,7 @@ class StrandsCollection:
             result+=line
 
         return result
+
 
 class CollectionNotValid(Exception):
     pass
