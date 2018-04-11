@@ -17,6 +17,14 @@ class TestAccessinguniProt(unittest.TestCase):
         
         mock.get.assert_called_with("https://www.uniprot.org/uniprot/ABCS.fasta")
 
+    def test_accessor_get_result_has_text_attribute(self):
+        mock = Mock()
+        mock.get.return_value.text = '>AFSFG'
+
+        test_subject = UniprotAccessor(mock)
+        result = test_subject.get_fasta('ABCS')
+        self.assertEqual('>AFSFG', result)
+
 BASE_UNIPROT_REQUEST = "https://www.uniprot.org/uniprot/{}.fasta"
 
 
@@ -25,4 +33,5 @@ class UniprotAccessor():
         self._driver = driver
         self.BASE_UNIPROT_REQUEST = "https://www.uniprot.org/uniprot/{}.fasta"
     def get_fasta(self, uniprot_id):
-        self._driver.get(self.BASE_UNIPROT_REQUEST.format(uniprot_id))
+        result = self._driver.get(self.BASE_UNIPROT_REQUEST.format(uniprot_id))
+        return result.text
