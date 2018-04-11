@@ -34,7 +34,11 @@ class TestAccessinguniProt(unittest.TestCase):
         with self.assertRaises(UniprotException):
             test_subject = UniprotAccessor(mock)
             test_subject.get_fasta('ABCS')
-        
+    
+    def test_getting_list_of_fastas(self):
+        accessor = UniprotAccessor(requests)
+        result = accessor.get_list_of_fastas(['A2Z669','B5ZC00','P07204_TRBM_HUMAN','P20840_SAG1_YEAST'])
+        print(result)
 
 
 BASE_UNIPROT_REQUEST = "https://www.uniprot.org/uniprot/{}.fasta"
@@ -51,3 +55,5 @@ class UniprotAccessor():
         if result.status_code != 200:
             raise UniprotException('Connection failed')
         return result.text
+    def get_list_of_fastas(self,list_of_ids):
+        return [self.get_fasta(item_id) for item_id in list_of_ids]
