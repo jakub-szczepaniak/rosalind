@@ -11,6 +11,7 @@ class TestAccessinguniProt(unittest.TestCase):
 
     def test_accessor_invokes_get_from_driver(self):
         mock = Mock()
+        mock.get.return_value.status_code=200
         test_subject = UniprotAccessor(mock)
         
         test_subject.get_fasta('ABCS')
@@ -20,13 +21,26 @@ class TestAccessinguniProt(unittest.TestCase):
     def test_accessor_get_result_has_text_attribute(self):
         mock = Mock()
         mock.get.return_value.text = '>AFSFG'
+        mock.get.return_value.status_code=200
 
         test_subject = UniprotAccessor(mock)
         result = test_subject.get_fasta('ABCS')
         self.assertEqual('>AFSFG', result)
 
+    def test_accessor_throws_exception_when_status_not_200(self):
+        mock = Mock()
+        mock.get.return_value.status_code = 404
+
+        with self.assertRaises(UniprotException):
+            test_subject = UniprotAccessor(mock)
+            test_subject.get_fasta('ABCS')
+        
+
+
 BASE_UNIPROT_REQUEST = "https://www.uniprot.org/uniprot/{}.fasta"
 
+class UniprotException(Exception):
+    pass
 
 class UniprotAccessor():
     def __init__(self, driver):
@@ -34,4 +48,6 @@ class UniprotAccessor():
         self.BASE_UNIPROT_REQUEST = "https://www.uniprot.org/uniprot/{}.fasta"
     def get_fasta(self, uniprot_id):
         result = self._driver.get(self.BASE_UNIPROT_REQUEST.format(uniprot_id))
+        if result.status_code != 200:
+            raise UniprotException('Connection failed')
         return result.text
